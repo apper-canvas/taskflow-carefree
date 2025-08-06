@@ -39,15 +39,15 @@ setFormData({
     setErrors({});
   }, [task, categories, isOpen]);
 
-  const validateForm = () => {
+const validateForm = () => {
     const newErrors = {};
     
-    if (!formData.title.trim()) {
-      newErrors.title = "Task title is required";
+    if (!formData.title_c.trim()) {
+      newErrors.title_c = "Task title is required";
     }
     
-    if (!formData.category) {
-      newErrors.category = "Please select a category";
+    if (!formData.category_c) {
+      newErrors.category_c = "Please select a category";
     }
     
     return newErrors;
@@ -121,26 +121,26 @@ setFormData({
                 </div>
                 
                 <div className="space-y-6">
-                  <Input
+<Input
                     label="Task Title"
                     type="text"
-                    value={formData.title}
-                    onChange={(e) => handleChange("title", e.target.value)}
-                    error={errors.title}
+                    value={formData.title_c}
+                    onChange={(e) => handleChange("title_c", e.target.value)}
+                    error={errors.title_c}
                     placeholder="Enter task title..."
                     className="text-base"
                   />
                   
                   <Textarea
                     label="Description (Optional)"
-                    value={formData.description}
-                    onChange={(e) => handleChange("description", e.target.value)}
+                    value={formData.description_c}
+                    onChange={(e) => handleChange("description_c", e.target.value)}
                     placeholder="Add task details..."
                     rows={3}
                   />
                   
                   <div className="grid grid-cols-2 gap-4">
-<Select
+                    <Select
                       label="Category"
                       value={formData.category_c}
                       onChange={(e) => handleChange("category_c", e.target.value)}
@@ -156,8 +156,8 @@ setFormData({
                     
                     <Select
                       label="Priority"
-                      value={formData.priority}
-                      onChange={(e) => handleChange("priority", e.target.value)}
+                      value={formData.priority_c}
+                      onChange={(e) => handleChange("priority_c", e.target.value)}
                     >
                       <option value="low">Low Priority</option>
                       <option value="medium">Medium Priority</option>
@@ -168,8 +168,8 @@ setFormData({
                   <Input
                     label="Due Date (Optional)"
                     type="date"
-                    value={formData.dueDate}
-                    onChange={(e) => handleChange("dueDate", e.target.value)}
+                    value={formData.dueDate_c}
+                    onChange={(e) => handleChange("dueDate_c", e.target.value)}
                   />
                 </div>
               </div>
