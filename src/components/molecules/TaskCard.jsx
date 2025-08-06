@@ -33,9 +33,8 @@ const TaskCard = ({
     }
   };
 
-  const categoryData = categories.find(c => c.name === task.category);
-  const categoryColor = categoryData?.color || "#6366f1";
-
+const categoryData = categories.find(c => c.Name === task.category_c);
+  const categoryColor = categoryData?.color_c || "#6366f1";
   const priorityColors = {
     high: "#ef4444",
     medium: "#f59e0b",
@@ -49,12 +48,12 @@ const TaskCard = ({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       whileHover={{ y: -2 }}
-      className={cn(
+className={cn(
         "bg-white rounded-xl shadow-sm hover:shadow-premium transition-all duration-300 border-l-4 overflow-hidden",
-        task.completed && "opacity-75",
+        task.completed_c && "opacity-75",
         isSelected && "ring-2 ring-primary-300 bg-primary-50/30"
       )}
-      style={{ borderLeftColor: priorityColors[task.priority] }}
+style={{ borderLeftColor: priorityColors[task.priority_c] }}
     >
       <div className="p-6">
         <div className="flex items-start space-x-4">
@@ -69,8 +68,8 @@ const TaskCard = ({
           )}
           
           <div className="flex-shrink-0 mt-1">
-            <Checkbox
-              checked={task.completed}
+<Checkbox
+              checked={task.completed_c}
               onChange={handleToggleComplete}
               className={isCompleting ? "animate-pulse" : ""}
             />
@@ -78,16 +77,16 @@ const TaskCard = ({
           
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between mb-3">
-              <h3 
+<h3 
                 className={cn(
                   "text-lg font-semibold transition-colors cursor-pointer",
-                  task.completed 
+                  task.completed_c 
                     ? "text-gray-500 line-through" 
                     : "text-gray-900 hover:text-primary-600"
                 )}
                 onClick={() => setIsExpanded(!isExpanded)}
               >
-                {task.title}
+{task.title_c}
               </h3>
               
               <div className="flex items-center space-x-2 ml-4">
@@ -110,28 +109,28 @@ const TaskCard = ({
               </div>
             </div>
             
-            {(isExpanded || task.description) && (
+{(isExpanded || task.description_c) && (
               <motion.p
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
                 className={cn(
                   "text-gray-600 mb-4 text-sm leading-relaxed",
-                  task.completed && "line-through"
+                  task.completed_c && "line-through"
                 )}
               >
-                {task.description || "No description provided"}
+                {task.description_c || "No description provided"}
               </motion.p>
             )}
             
             <div className="flex flex-wrap items-center gap-2">
-              <CategoryPill 
-                category={task.category} 
+<CategoryPill 
+                category={task.category_c} 
                 color={categoryColor}
               />
-              <PriorityBadge priority={task.priority} />
+              <PriorityBadge priority={task.priority_c} />
               <DueDatePill 
-                dueDate={task.dueDate} 
-                completed={task.completed}
+                dueDate={task.dueDate_c} 
+                completed={task.completed_c}
               />
             </div>
           </div>
@@ -145,19 +144,19 @@ const TaskCard = ({
           className="px-6 pb-4 pt-0 border-t border-gray-50"
         >
           <div className="flex items-center justify-between text-xs text-gray-500 mt-4">
-            <span>
-              Created: {new Date(task.createdAt).toLocaleDateString()}
+<span>
+              Created: {new Date(task.createdAt_c).toLocaleDateString()}
             </span>
-            {task.completedAt && (
+{task.completedAt_c && (
               <span>
-                Completed: {new Date(task.completedAt).toLocaleDateString()}
+                Completed: {new Date(task.completedAt_c).toLocaleDateString()}
               </span>
             )}
           </div>
         </motion.div>
       )}
       
-      {task.completed && task.priority === "high" && (
+{task.completed_c && task.priority_c === "high" && (
         <div className="absolute inset-0 pointer-events-none">
           <div className="confetti-animation" />
         </div>

@@ -8,32 +8,32 @@ import ApperIcon from "@/components/ApperIcon";
 import { cn } from "@/utils/cn";
 
 const TaskModal = ({ isOpen, onClose, onSubmit, task = null, categories = [] }) => {
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    category: "",
-    priority: "medium",
-    dueDate: ""
+const [formData, setFormData] = useState({
+    title_c: "",
+    description_c: "",
+    category_c: "",
+    priority_c: "medium",
+    dueDate_c: ""
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    if (task) {
+if (task) {
       setFormData({
-        title: task.title || "",
-        description: task.description || "",
-        category: task.category || "",
-        priority: task.priority || "medium",
-        dueDate: task.dueDate || ""
+        title_c: task.title_c || "",
+        description_c: task.description_c || "",
+        category_c: task.category_c || "",
+        priority_c: task.priority_c || "medium",
+        dueDate_c: task.dueDate_c || ""
       });
     } else {
-      setFormData({
-        title: "",
-        description: "",
-        category: categories.length > 0 ? categories[0].name : "",
-        priority: "medium",
-        dueDate: ""
+setFormData({
+        title_c: "",
+        description_c: "",
+        category_c: categories.length > 0 ? categories[0].Name : "",
+        priority_c: "medium",
+        dueDate_c: ""
       });
     }
     setErrors({});
@@ -140,16 +140,16 @@ const TaskModal = ({ isOpen, onClose, onSubmit, task = null, categories = [] }) 
                   />
                   
                   <div className="grid grid-cols-2 gap-4">
-                    <Select
+<Select
                       label="Category"
-                      value={formData.category}
-                      onChange={(e) => handleChange("category", e.target.value)}
-                      error={errors.category}
+                      value={formData.category_c}
+                      onChange={(e) => handleChange("category_c", e.target.value)}
+                      error={errors.category_c}
                     >
                       <option value="">Select category</option>
                       {categories.map((category) => (
-                        <option key={category.Id} value={category.name}>
-                          {category.name}
+                        <option key={category.Id} value={category.Name}>
+                          {category.Name}
                         </option>
                       ))}
                     </Select>

@@ -55,10 +55,10 @@ const [tasks, setTasks] = useState([]);
     loadCategories();
   }, []);
 
-  const updateCategoryTaskCounts = useCallback(() => {
+const updateCategoryTaskCounts = useCallback(() => {
     categories.forEach(async (category) => {
-      const categoryTasks = tasks.filter(task => task.category === category.name);
-      await categoryService.updateTaskCount(category.name, categoryTasks.length);
+      const categoryTasks = tasks.filter(task => task.category_c === category.Name);
+      await categoryService.updateTaskCount(category.Name, categoryTasks.length);
     });
   }, [tasks, categories]);
 
@@ -69,23 +69,23 @@ const [tasks, setTasks] = useState([]);
   const applyFilters = useCallback(() => {
     let filtered = [...tasks];
 
-    // Filter by category
+// Filter by category
     if (selectedCategory) {
-      filtered = filtered.filter(task => task.category === selectedCategory);
+      filtered = filtered.filter(task => task.category_c === selectedCategory);
     }
 
     // Filter by status
-    if (activeFilter === "active") {
-      filtered = filtered.filter(task => !task.completed);
+if (activeFilter === "active") {
+      filtered = filtered.filter(task => !task.completed_c);
     } else if (activeFilter === "completed") {
-      filtered = filtered.filter(task => task.completed);
+      filtered = filtered.filter(task => task.completed_c);
     }
 
     // Filter by search query
     if (searchQuery) {
       filtered = filtered.filter(task =>
-        task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        task.description.toLowerCase().includes(searchQuery.toLowerCase())
+        task.title_c.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        task.description_c.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
@@ -98,14 +98,14 @@ const [tasks, setTasks] = useState([]);
 
   const getTaskCounts = () => {
     const counts = {
-      all: tasks.length,
-      active: tasks.filter(t => !t.completed).length,
-      completed: tasks.filter(t => t.completed).length
+all: tasks.length,
+      active: tasks.filter(t => !t.completed_c).length,
+      completed: tasks.filter(t => t.completed_c).length
     };
 
     const categoryCounts = {};
     categories.forEach(category => {
-      categoryCounts[category.name] = tasks.filter(t => t.category === category.name).length;
+      categoryCounts[category.Name] = tasks.filter(t => t.category_c === category.Name).length;
     });
 
     return { ...counts, ...categoryCounts };
@@ -118,8 +118,8 @@ const [tasks, setTasks] = useState([]);
         task.Id === taskId ? updatedTask : task
       ));
       
-      if (updatedTask.completed) {
-        if (updatedTask.priority === "high") {
+if (updatedTask.completed_c) {
+        if (updatedTask.priority_c === "high") {
           toast.success("🎉 High priority task completed! Excellent work!");
         } else {
           toast.success("✅ Task completed successfully!");
@@ -205,8 +205,8 @@ const [tasks, setTasks] = useState([]);
   const handleBulkComplete = async (taskIds) => {
     try {
       await taskService.bulkComplete(taskIds);
-      setTasks(prev => prev.map(task => 
-        taskIds.includes(task.Id) ? { ...task, completed: true, completedAt: new Date().toISOString() } : task
+setTasks(prev => prev.map(task => 
+        taskIds.includes(task.Id) ? { ...task, completed_c: true, completedAt_c: new Date().toISOString() } : task
       ));
       toast.success(`${taskIds.length} task${taskIds.length !== 1 ? 's' : ''} completed successfully!`);
       handleClearSelection();
@@ -231,8 +231,8 @@ const [tasks, setTasks] = useState([]);
   const handleBulkPriorityUpdate = async (taskIds, priority) => {
     try {
       await taskService.bulkUpdatePriority(taskIds, priority);
-      setTasks(prev => prev.map(task => 
-        taskIds.includes(task.Id) ? { ...task, priority } : task
+setTasks(prev => prev.map(task => 
+        taskIds.includes(task.Id) ? { ...task, priority_c: priority } : task
       ));
       toast.success(`Priority updated to ${priority} for ${taskIds.length} task${taskIds.length !== 1 ? 's' : ''}`);
       handleClearSelection();
