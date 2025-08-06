@@ -16,7 +16,10 @@ const TaskList = ({
   onAddTask,
   categories = [],
   emptyMessage = "No tasks found",
-  emptyDescription = "Start by creating your first task to get organized"
+  emptyDescription = "Start by creating your first task to get organized",
+  selectionMode = false,
+  selectedTasks = [],
+  onTaskSelect
 }) => {
   if (loading) {
     return <Loading variant="skeleton" />;
@@ -42,13 +45,16 @@ const TaskList = ({
     <div className="space-y-4">
       <AnimatePresence mode="wait">
         {tasks.map((task) => (
-          <TaskCard
+<TaskCard
             key={task.Id}
             task={task}
             onToggleComplete={onToggleComplete}
             onEdit={onEditTask}
             onDelete={onDeleteTask}
             categories={categories}
+            selectionMode={selectionMode}
+            isSelected={selectedTasks.some(selected => selected.Id === task.Id)}
+            onSelect={onTaskSelect}
           />
         ))}
       </AnimatePresence>

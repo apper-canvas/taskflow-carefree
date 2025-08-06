@@ -1,14 +1,23 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import Checkbox from "@/components/atoms/Checkbox";
-import Button from "@/components/atoms/Button";
-import PriorityBadge from "@/components/molecules/PriorityBadge";
-import DueDatePill from "@/components/molecules/DueDatePill";
-import CategoryPill from "@/components/molecules/CategoryPill";
 import ApperIcon from "@/components/ApperIcon";
+import CategoryPill from "@/components/molecules/CategoryPill";
+import DueDatePill from "@/components/molecules/DueDatePill";
+import PriorityBadge from "@/components/molecules/PriorityBadge";
+import Button from "@/components/atoms/Button";
+import Checkbox from "@/components/atoms/Checkbox";
 import { cn } from "@/utils/cn";
 
-const TaskCard = ({ task, onToggleComplete, onEdit, onDelete, categories = [] }) => {
+const TaskCard = ({ 
+  task, 
+  onToggleComplete, 
+  onEdit, 
+  onDelete, 
+  categories = [],
+  selectionMode = false,
+  isSelected = false,
+  onSelect
+}) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isCompleting, setIsCompleting] = useState(false);
 
@@ -16,6 +25,12 @@ const TaskCard = ({ task, onToggleComplete, onEdit, onDelete, categories = [] })
     setIsCompleting(true);
     await onToggleComplete(task.Id);
     setIsCompleting(false);
+  };
+
+  const handleSelectionChange = (checked) => {
+    if (onSelect) {
+      onSelect(task, checked);
+    }
   };
 
   const categoryData = categories.find(c => c.name === task.category);
@@ -36,12 +51,23 @@ const TaskCard = ({ task, onToggleComplete, onEdit, onDelete, categories = [] })
       whileHover={{ y: -2 }}
       className={cn(
         "bg-white rounded-xl shadow-sm hover:shadow-premium transition-all duration-300 border-l-4 overflow-hidden",
-        task.completed && "opacity-75"
+        task.completed && "opacity-75",
+        isSelected && "ring-2 ring-primary-300 bg-primary-50/30"
       )}
       style={{ borderLeftColor: priorityColors[task.priority] }}
     >
       <div className="p-6">
         <div className="flex items-start space-x-4">
+          {selectionMode && (
+            <div className="flex-shrink-0 mt-1">
+              <Checkbox
+                checked={isSelected}
+                onChange={handleSelectionChange}
+                className="border-primary-300"
+              />
+            </div>
+          )}
+          
           <div className="flex-shrink-0 mt-1">
             <Checkbox
               checked={task.completed}

@@ -7,12 +7,12 @@ import FilterTabs from "@/components/molecules/FilterTabs";
 import CategorySidebar from "@/components/organisms/CategorySidebar";
 import TaskList from "@/components/organisms/TaskList";
 import TaskModal from "@/components/organisms/TaskModal";
+import BulkToolbar from "@/components/organisms/BulkToolbar";
 import ApperIcon from "@/components/ApperIcon";
 import taskService from "@/services/api/taskService";
 import categoryService from "@/services/api/categoryService";
-
 const TasksPage = () => {
-  const [tasks, setTasks] = useState([]);
+const [tasks, setTasks] = useState([]);
   const [categories, setCategories] = useState([]);
   const [filteredTasks, setFilteredTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,6 +25,9 @@ const TasksPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
 
+  // Selection state for bulk operations
+  const [selectedTasks, setSelectedTasks] = useState([]);
+  const [selectionMode, setSelectionMode] = useState(false);
   const loadTasks = async () => {
     try {
       setError("");
@@ -159,7 +162,7 @@ const TasksPage = () => {
       toast.error("Failed to save task");
       console.error("Error saving task:", err);
     }
-  };
+};
 
   const handleDeleteTask = async (taskId) => {
     if (window.confirm("Are you sure you want to delete this task?")) {
@@ -171,6 +174,71 @@ const TasksPage = () => {
         toast.error("Failed to delete task");
         console.error("Error deleting task:", err);
       }
+    }
+  };
+
+  // Bulk operations handlers
+  const handleTaskSelect = (task, isSelected) => {
+    setSelectedTasks(prev => {
+      if (isSelected) {
+        const newSelection = [...prev, task];
+        setSelectionMode(newSelection.length > 0);
+        return newSelection;
+      } else {
+        const newSelection = prev.filter(t => t.Id !== task.Id);
+        setSelectionMode(newSelection.length > 0);
+        return newSelection;
+      }
+    });
+  };
+
+  const handleSelectAll = () => {
+    setSelectedTasks([...filteredTasks]);
+    setSelectionMode(true);
+  };
+
+  const handleClearSelection = () => {
+    setSelectedTasks([]);
+    setSelectionMode(false);
+  };
+
+  const handleBulkComplete = async (taskIds) => {
+    try {
+      await taskService.bulkComplete(taskIds);
+      setTasks(prev => prev.map(task => 
+        taskIds.includes(task.Id) ? { ...task, completed: true, completedAt: new Date().toISOString() } : task
+      ));
+      toast.success(`${taskIds.length} task${taskIds.length !== 1 ? 's' : ''} completed successfully!`);
+      handleClearSelection();
+    } catch (err) {
+      toast.error("Failed to complete tasks");
+      console.error("Error completing tasks:", err);
+    }
+  };
+
+  const handleBulkDelete = async (taskIds) => {
+    try {
+      await taskService.bulkDelete(taskIds);
+      setTasks(prev => prev.filter(task => !taskIds.includes(task.Id)));
+      toast.success(`${taskIds.length} task${taskIds.length !== 1 ? 's' : ''} deleted successfully`);
+      handleClearSelection();
+    } catch (err) {
+      toast.error("Failed to delete tasks");
+      console.error("Error deleting tasks:", err);
+    }
+  };
+
+  const handleBulkPriorityUpdate = async (taskIds, priority) => {
+    try {
+      await taskService.bulkUpdatePriority(taskIds, priority);
+      setTasks(prev => prev.map(task => 
+        taskIds.includes(task.Id) ? { ...task, priority } : task
+      ));
+      toast.success(`Priority updated to ${priority} for ${taskIds.length} task${taskIds.length !== 1 ? 's' : ''}`);
+      handleClearSelection();
+    } catch (err) {
+      toast.error("Failed to update task priorities");
+      console.error("Error updating priorities:", err);
     }
   };
 
@@ -231,11 +299,22 @@ const TasksPage = () => {
               activeFilter={activeFilter}
               onFilterChange={setActiveFilter}
               taskCounts={taskCounts}
-            />
+/>
           </div>
 
+          {/* Bulk Operations Toolbar */}
+          <BulkToolbar
+            selectedTasks={selectedTasks}
+            totalTasks={filteredTasks.length}
+            onSelectAll={handleSelectAll}
+            onClearSelection={handleClearSelection}
+            onBulkComplete={handleBulkComplete}
+            onBulkDelete={handleBulkDelete}
+            onBulkPriorityUpdate={handleBulkPriorityUpdate}
+          />
+
           {/* Task List */}
-          <div className="bg-white rounded-xl shadow-sm p-6">
+<div className="bg-white rounded-xl shadow-sm p-6">
             <TaskList
               tasks={filteredTasks}
               loading={loading}
@@ -246,6 +325,9 @@ const TasksPage = () => {
               onDeleteTask={handleDeleteTask}
               onAddTask={handleAddTask}
               categories={categories}
+              selectionMode={selectionMode}
+              selectedTasks={selectedTasks}
+              onTaskSelect={handleTaskSelect}
               emptyMessage={
                 searchQuery 
                   ? "No tasks match your search" 

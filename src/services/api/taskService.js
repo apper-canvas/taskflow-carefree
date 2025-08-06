@@ -110,8 +110,7 @@ class TaskService {
       }, 200);
     });
   }
-
-  async getByCategory(category) {
+async getByCategory(category) {
     return new Promise((resolve) => {
       setTimeout(() => {
         const filtered = this.tasks.filter(t => t.category === category);
@@ -129,6 +128,70 @@ class TaskService {
         );
         resolve([...filtered]);
       }, 250);
+    });
+  }
+
+  // Bulk operations
+  async bulkComplete(taskIds) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        try {
+          const completedTasks = [];
+          taskIds.forEach(id => {
+            const task = this.tasks.find(t => t.Id === parseInt(id));
+            if (task && !task.completed) {
+              task.completed = true;
+              task.completedAt = new Date().toISOString();
+              completedTasks.push({...task});
+            }
+          });
+          this.saveToLocalStorage();
+          resolve(completedTasks);
+        } catch (error) {
+          reject(error);
+        }
+      }, 300);
+    });
+  }
+
+  async bulkDelete(taskIds) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        try {
+          const deletedCount = taskIds.length;
+          taskIds.forEach(id => {
+            const index = this.tasks.findIndex(t => t.Id === parseInt(id));
+            if (index !== -1) {
+              this.tasks.splice(index, 1);
+            }
+          });
+          this.saveToLocalStorage();
+          resolve({ deletedCount });
+        } catch (error) {
+          reject(error);
+        }
+      }, 300);
+    });
+  }
+
+  async bulkUpdatePriority(taskIds, priority) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        try {
+          const updatedTasks = [];
+          taskIds.forEach(id => {
+            const task = this.tasks.find(t => t.Id === parseInt(id));
+            if (task) {
+              task.priority = priority;
+              updatedTasks.push({...task});
+            }
+          });
+          this.saveToLocalStorage();
+          resolve(updatedTasks);
+        } catch (error) {
+          reject(error);
+        }
+      }, 300);
     });
   }
 }
