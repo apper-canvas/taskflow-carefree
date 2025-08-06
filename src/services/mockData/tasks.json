@@ -1,0 +1,90 @@
+[
+  {
+    "Id": 1,
+    "title": "Review quarterly reports",
+    "description": "Go through Q3 financial reports and prepare summary for board meeting",
+    "category": "Work",
+    "priority": "high",
+    "dueDate": "2024-01-15",
+    "completed": false,
+    "createdAt": "2024-01-10T09:00:00.000Z",
+    "completedAt": null
+  },
+  {
+    "Id": 2,
+    "title": "Grocery shopping",
+    "description": "Buy ingredients for weekly meal prep - chicken, vegetables, rice",
+    "category": "Personal",
+    "priority": "medium",
+    "dueDate": "2024-01-12",
+    "completed": false,
+    "createdAt": "2024-01-10T10:30:00.000Z",
+    "completedAt": null
+  },
+  {
+    "Id": 3,
+    "title": "Call mom",
+    "description": "Weekly check-in call with mom to catch up",
+    "category": "Personal",
+    "priority": "medium",
+    "dueDate": "2024-01-13",
+    "completed": true,
+    "createdAt": "2024-01-08T16:00:00.000Z",
+    "completedAt": "2024-01-11T18:30:00.000Z"
+  },
+  {
+    "Id": 4,
+    "title": "Update project documentation",
+    "description": "Update API documentation and README files for the new features",
+    "category": "Work",
+    "priority": "low",
+    "dueDate": "2024-01-20",
+    "completed": false,
+    "createdAt": "2024-01-09T14:15:00.000Z",
+    "completedAt": null
+  },
+  {
+    "Id": 5,
+    "title": "Book dentist appointment",
+    "description": "Schedule routine dental checkup for next month",
+    "category": "Health",
+    "priority": "medium",
+    "dueDate": "2024-01-18",
+    "completed": false,
+    "createdAt": "2024-01-10T11:45:00.000Z",
+    "completedAt": null
+  },
+  {
+    "Id": 6,
+    "title": "Plan weekend getaway",
+    "description": "Research and book accommodation for Valentine's weekend trip",
+    "category": "Personal",
+    "priority": "low",
+    "dueDate": "2024-01-25",
+    "completed": false,
+    "createdAt": "2024-01-10T20:00:00.000Z",
+    "completedAt": null
+  },
+  {
+    "Id": 7,
+    "title": "Prepare presentation",
+    "description": "Create slides for Monday's client presentation on product roadmap",
+    "category": "Work",
+    "priority": "high",
+    "dueDate": "2024-01-14",
+    "completed": false,
+    "createdAt": "2024-01-10T13:20:00.000Z",
+    "completedAt": null
+  },
+  {
+    "Id": 8,
+    "title": "Yoga class",
+    "description": "Attend evening yoga class at the local studio",
+    "category": "Health",
+    "priority": "low",
+    "dueDate": "2024-01-11",
+    "completed": true,
+    "createdAt": "2024-01-10T08:00:00.000Z",
+    "completedAt": "2024-01-11T19:00:00.000Z"
+  }
+]
